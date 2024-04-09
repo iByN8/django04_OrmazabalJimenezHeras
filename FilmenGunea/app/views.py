@@ -6,9 +6,6 @@ from app.models import Filma,Bozkatzailea
 from django.core.paginator import Paginator
 from django.contrib import messages
 
-
-
-
 def home(request):
     assert isinstance(request, HttpRequest)
     return render(
@@ -43,22 +40,39 @@ def filmakikusi(request):
     page_obj = paginator.get_page(page_number) 
 
     return render(request, 'app/filmakikusi.html', {'page_obj': page_obj})
+from django.contrib import messages
 
 @login_required
 def bozkatu(request):
     filmak = Filma.objects.all()
 
     if request.method == 'POST':
-        pelicula_id = request.POST.get('pelicula_id')
-        pelicula = Filma.objects.get(pk=pelicula_id)
-        pelicula.bozkak += 1
-        pelicula.save()
-        if request.user.is_authenticated:
-            bozkatzailea, created = Bozkatzailea.objects.get_or_create(erabiltzailea=request.user)
-            bozkatzailea.gogoko_filmak.add(pelicula)
-        messages.success(request, 'Filma bozkatu da!')
+        filma_id = request.POST.get('filma_id')
+        filma = Filma.objects.get(pk=filma_id)
+
+        if Bozkatzailea.objects.filter(erabiltzailea=request.user, gogoko_filmak=filma).exists():
+            messages.error(request, 'Ezin duzu film berdina bi aldiz bozkatu.')
+        else:
+            filma.bozkak += 1
+            filma.save()
+            if request.user.is_authenticated:
+                bozkatzailea, created = Bozkatzailea.objects.get_or_create(erabiltzailea=request.user)
+                bozkatzailea.gogoko_filmak.add(pelicula)
+            messages.success(request, 'Filma bozkatu da!')
 
     return render(request, 'app/bozkatu.html', {'filmak': filmak, 'messages': messages.get_messages(request)})
+
+def zaleak(request):
+    filmak = Filma.objects.all()
+    bozkak = []
+
+    if request.method == 'POST':
+        filma_id = request.POST.get('filma_id')
+        filma = Filma.objects.get(pk=filma_id)
+        bozkak = filma.bozkatzaileak.values_list('erabiltzailea__username', flat=True)
+
+    return render(request, 'app/zaleak.html', {'filmak': filmak, 'bozkak': bozkak})
+
 
 
 

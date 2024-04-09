@@ -1,8 +1,8 @@
 {% extends "app/logged.html" %}
 
 {% block content %}
+<h1>Zaleak</h1>
 
-<h1>Bozkatu Zure Filmak</h1>
 <form method="post">
   {% csrf_token %}
   <label for="filma_id">Aukeratu zure gogoko filmak:</label>
@@ -11,13 +11,22 @@
       <option value="{{ filma.id }}">{{ filma.izenburua }}</option>
     {% endfor %}
   </select>
-  <button type="submit">Bozkatu</button>
+  <button type="submit">Bilatu</button>
 </form>
+
+{% if bozkak %}
+  <ul>
+    {% for user in bozkak %}
+      <li>{{ user }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 {% for message in messages %}
 <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %}" role="alert">
   {{ message }}
 </div>
 {% endfor %}
-<a href="{% url 'logged' %}">Atzera</a>
 
+<a href="{% url 'logged' %}">Atzera</a>
 {% endblock %}

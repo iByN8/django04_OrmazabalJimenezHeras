@@ -23,6 +23,7 @@ urlpatterns = [
          ),
          name='login'),
     path('logged/', views.logged, name='logged'),
+     path('zaleak/', views.zaleak, name='zaleak'),
     path('filmakikusi/', views.filmakikusi, name='filmakikusi'),
     path('bozkatu/', views.bozkatu, name='bozkatu'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
