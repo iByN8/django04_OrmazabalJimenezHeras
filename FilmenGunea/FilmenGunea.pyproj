@@ -56,6 +56,7 @@
     <Folder Include="FilmenGunea\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\templates\app\bozkatu.html" />
     <Content Include="app\templates\app\logged.html" />
     <Content Include="app\templates\app\register.html" />
     <Content Include="app\templates\app\FilmakIkusi.html" />

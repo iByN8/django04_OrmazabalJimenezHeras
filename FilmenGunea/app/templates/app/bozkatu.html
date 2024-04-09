@@ -13,5 +13,11 @@
   </select>
   <button type="submit">Bozkatu</button>
 </form>
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+<a href="{% url 'logged' %}">Atzera</a>
 
 {% endblock %}

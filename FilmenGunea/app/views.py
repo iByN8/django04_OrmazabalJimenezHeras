@@ -2,8 +2,10 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required  
-from app.models import Filma
+from app.models import Filma,Bozkatzailea
 from django.core.paginator import Paginator
+from django.contrib import messages
+
 
 
 
@@ -41,5 +43,22 @@ def filmakikusi(request):
     page_obj = paginator.get_page(page_number) 
 
     return render(request, 'app/filmakikusi.html', {'page_obj': page_obj})
+
+@login_required
+def bozkatu(request):
+    filmak = Filma.objects.all()
+
+    if request.method == 'POST':
+        pelicula_id = request.POST.get('pelicula_id')
+        pelicula = Filma.objects.get(pk=pelicula_id)
+        pelicula.bozkak += 1
+        pelicula.save()
+        if request.user.is_authenticated:
+            bozkatzailea, created = Bozkatzailea.objects.get_or_create(erabiltzailea=request.user)
+            bozkatzailea.gogoko_filmak.add(pelicula)
+        messages.success(request, 'Filma bozkatu da!')
+
+    return render(request, 'app/bozkatu.html', {'filmak': filmak, 'messages': messages.get_messages(request)})
+
 
 

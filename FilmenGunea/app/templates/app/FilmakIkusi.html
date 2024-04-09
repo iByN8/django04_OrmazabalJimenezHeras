@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>Películas</h2>
+<h2>Filmak</h2>
 
 <table class="table">
     <thead>
@@ -27,7 +27,7 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="6">No hay películas disponibles.</td>
+            <td colspan="6">Ez daude filmarik.</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -48,5 +48,7 @@
         {% endif %}
     </span>
 </div>
+<a href="{% url 'logged' %}">Atzera</a>
+
 
 {% endblock %}
