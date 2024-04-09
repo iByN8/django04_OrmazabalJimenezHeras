@@ -1,0 +1,52 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>Películas</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Izenburua</th>
+            <th scope="col">Zuzendaria</th>
+            <th scope="col">Urtea</th>
+            <th scope="col">Generoa</th>
+            <th scope="col">Sinopsia</th>
+            <th scope="col">Bozkak</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for filma in page_obj %}
+        <tr>
+            <td>{{ filma.izenburua }}</td>
+            <td>{{ filma.zuzendaria }}</td>
+            <td>{{ filma.urtea }}</td>
+            <td>{{ filma.generoa }}</td>
+            <td>{{ filma.sinopsia }}</td>
+            <td>{{ filma.bozkak }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay películas disponibles.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Aurrekoa</a>
+        {% endif %}
+
+        <span class="current">
+            Orria {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Hurrengoa</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}

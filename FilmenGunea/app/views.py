@@ -2,10 +2,12 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.contrib.auth.decorators import login_required  
+from app.models import Filma
+from django.core.paginator import Paginator
+
 
 
 def home(request):
-    """Renders the home page."""
     assert isinstance(request, HttpRequest)
     return render(
         request,
@@ -17,7 +19,6 @@ def home(request):
     )
 @login_required
 def logged(request):
-    """Render the logged page."""
     return render(request, 'app/logged.html')
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -31,5 +32,14 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'app/register.html', {'form': form})
+
+def filmakikusi(request):
+    filmak_list = Filma.objects.all()  
+    paginator = Paginator(filmak_list, 5) 
+
+    page_number = request.GET.get('page')  
+    page_obj = paginator.get_page(page_number) 
+
+    return render(request, 'app/filmakikusi.html', {'page_obj': page_obj})
 
 

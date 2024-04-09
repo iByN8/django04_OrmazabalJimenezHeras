@@ -23,6 +23,7 @@ urlpatterns = [
          ),
          name='login'),
     path('logged/', views.logged, name='logged'),
+    path('filmakikusi/', views.filmakikusi, name='filmakikusi'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
 ]
